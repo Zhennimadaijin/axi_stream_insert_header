@@ -2,7 +2,7 @@
 
 `timescale 		1ns/1ns
 
-module main_tb(
+module axi_stream_insert_header_tb(
     );
 parameter DATA_WD = 32;
 parameter DATA_BYTE_WD = DATA_WD / 8 ;
@@ -161,7 +161,7 @@ end
 
 always #10 clk = ~clk;
 //---------DUT-------------------
-axi2 axi_u0(
+axi_stream_insert_header axi(
 	.clk			( clk			),
 	.rst_n			( rst_n			),
 	.valid_in		( valid_in		),
