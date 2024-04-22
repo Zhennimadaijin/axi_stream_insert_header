@@ -8,14 +8,14 @@ parameter DATA_WD = 32;
 parameter DATA_BYTE_WD = DATA_WD / 8 ;
 parameter BYTE_CNT_WD = $clog2(DATA_BYTE_WD);
 
-reg	clk		= 'd0;
-reg	rst_n	= 'd0;
+reg	clk;
+reg	rst_n;
 // AXI Stream reg header
 reg                        valid_insert;
 reg   [DATA_WD-1 : 0]      data_insert;
 reg   [DATA_BYTE_WD-1 : 0] keep_insert;
 wire                       ready_insert;
-reg   [BYTE_CNT_WD-1 : 0]  byte_insert_cnt; //keep insert内有多少个1
+reg   [BYTE_CNT_WD-1 : 0]  byte_insert_cnt; 
 reg                        valid_in;
 reg   [DATA_WD-1 : 0]      data_in;
 reg   [DATA_BYTE_WD-1 : 0] keep_in;
@@ -46,7 +46,8 @@ end
 
 
   
-//---------task 1:hdr axi -------------------
+
+	
 task 	hdr_axi_slave;
 reg	[BYTE_CNT_WD-1:0] hdr_cnt;
 	begin
@@ -57,7 +58,8 @@ reg	[BYTE_CNT_WD-1:0] hdr_cnt;
 		byte_insert_cnt = DATA_BYTE_WD - hdr_cnt;
 	end
 endtask
-//-----------task 2 :data axi -----------------
+
+	
 task data_axi;
 	begin
 		valid_in =1'b1;
@@ -66,7 +68,8 @@ task data_axi;
 		last_in =1'b0;
 	end
 endtask
-//----------task 3 : data axi last-------------
+
+	
 task data_axi_last;
 	reg	[DATA_BYTE_WD-1:0]last_cnt;
 	begin
@@ -80,7 +83,7 @@ task data_axi_last;
 		last_in = 1'b0;
 	end
 endtask
-//----------task 4 : data axi interrupt-------------
+	
 task data_axi_intp;
 	begin
 		valid_in =1'b0;
@@ -90,8 +93,8 @@ task data_axi_intp;
 	end
 endtask
 
-//-----------task case------------------------------
-//-----------task testcase : test1 hdr/data ------------------------------
+
+	
 task test1;
 	begin
 		data_axi;
@@ -106,7 +109,8 @@ task test1;
 			data_axi_last;
 	end
 endtask
-//-----------task testcase : test2 hdr IDLE data--------------------------------
+
+	
 task test2;
 	begin
 		hdr_axi_slave;
@@ -124,7 +128,8 @@ task test2;
 			data_axi_last;
 	end
 endtask
-//-----------task testcase : test3 data hdr--------------------------------
+
+	
 task test3;
 	begin
 		repeat (5)
@@ -145,7 +150,8 @@ task test3;
 	end
 endtask
 
-//-----------initial block -----------
+
+	
 initial 
 begin
 	clk		= 'd0;
@@ -160,35 +166,36 @@ begin
 end
 
 always #10 clk = ~clk;
-//---------DUT-------------------
+
+	
 axi_stream_insert_header axi(
-	.clk			( clk			),
-	.rst_n			( rst_n			),
-	.valid_in		( valid_in		),
-	.data_in		( data_in		),
-	.keep_in		( keep_in		),
-	.last_in		( last_in		),
-	.ready_in		( ready_in		),
-	.valid_out		( valid_out		),
-	.data_out		( data_out		),
-	.keep_out		( keep_out		),
-	.last_out		( last_out		),
-	.ready_out		( ready_out		),
-	.valid_insert	( valid_insert	),
-	.data_insert	( data_insert	),
-	.byte_insert_cnt (byte_insert_cnt),
-	.keep_insert  	 (keep_insert	),
-  .ready_insert	   (ready_insert	),
-  .data_r1         (data_r1),
-  .data_keep_r1    (data_keep_r1),
-  .hdr_valid_r1    (hdr_valid_r1),
-  .hdr_r1          (hdr_r1),
-  .hdr_keep_r1     (hdr_keep_r1),
-  .byte_insert_cnt_r1   (byte_insert_cnt_r1),
-  .temp_data          (temp_data),
-  .temp_keep          (temp_keep),
-  .hdr_buffer_full    (hdr_buffer_full),
-  .dara_buffer_full   (data_bufffer_full),
-  .hdr_en             (hdr_en)
+	.clk			( clk),
+	.rst_n			( rst_n),
+	.valid_in		( valid_in),
+	.data_in		( data_in),
+	.keep_in		( keep_in),
+	.last_in		( last_in),
+	.ready_in		( ready_in),
+	.valid_out		( valid_out),
+	.data_out		( data_out),
+	.keep_out		( keep_out),
+	.last_out		( last_out),
+	.ready_out		( ready_out),
+	.valid_insert		( valid_insert	),
+	.data_insert		( data_insert	),
+	.byte_insert_cnt	(byte_insert_cnt),
+	.keep_insert  		(keep_insert	),
+        .ready_insert	 	(ready_insert	),
+        .data_r1         	(data_r1),
+        .data_keep_r1    	(data_keep_r1),
+        .hdr_valid_r1    	(hdr_valid_r1),
+        .hdr_r1          	(hdr_r1),
+        .hdr_keep_r1   	        (hdr_keep_r1),
+        .byte_insert_cnt_r1     (byte_insert_cnt_r1),
+        .temp_data              (temp_data),
+        .temp_keep              (temp_keep),
+        .hdr_buffer_full        (hdr_buffer_full),
+        .dara_buffer_full       (data_bufffer_full),
+        .hdr_en                 (hdr_en)
 );
 endmodule
