@@ -8,41 +8,48 @@ parameter DATA_WD = 32;
 parameter DATA_BYTE_WD = DATA_WD / 8 ;
 parameter BYTE_CNT_WD = $clog2(DATA_BYTE_WD);
 
-reg	clk;
-reg	rst_n;
+reg				clk;
+reg				rst_n;
 // AXI Stream reg header
-reg                        valid_insert;
-reg   [DATA_WD-1 : 0]      data_insert;
-reg   [DATA_BYTE_WD-1 : 0] keep_insert;
-wire                       ready_insert;
-reg   [BYTE_CNT_WD-1 : 0]  byte_insert_cnt; 
-reg                        valid_in;
-reg   [DATA_WD-1 : 0]      data_in;
-reg   [DATA_BYTE_WD-1 : 0] keep_in;
-reg                        last_in;
-wire                       ready_in;
-wire                       valid_out;
-wire  [DATA_WD-1 : 0]      data_out;
-wire  [DATA_BYTE_WD-1 : 0] keep_out;
-wire                       last_out;
-reg                        ready_out;
+reg                        	valid_insert;
+reg   	[DATA_WD-1 : 0]     	data_insert;
+reg  	[DATA_BYTE_WD-1 : 0] 	keep_insert;
+wire                       	ready_insert;
+reg   	[BYTE_CNT_WD-1 : 0]  	byte_insert_cnt; 
+reg                        	valid_in;
+reg   	[DATA_WD-1 : 0]      	data_in;
+reg   	[DATA_BYTE_WD-1 : 0] 	keep_in;
+reg                        	last_in;
+wire                       	ready_in;
+wire                       	valid_out;
+wire  	[DATA_WD-1 : 0]      	data_out;
+wire  	[DATA_BYTE_WD-1 : 0] 	keep_out;
+wire                       	last_out;
+reg                        	ready_out;
 
-
-
+reg    	[DATA_WD-1:0]    	data_r1;
+reg    	[DATA_BYTE_WD-1:0] 	data_keep_r1;
+reg              		hdr_valid_r1;
+reg    	[DATA_WD-1:0]  		har_r1;
+reg 	[DATA_BYTE_WD-1:0]     	hdr_keep_r1;
+reg  	[2*DATA_WD-1:0]      	temp_data;
+reg  	[2*DATA_BYTE_WD-1:0]   	temp_keep;
+reg   				hdr_buffer_full;
+reg				data_buffer_full;
+wire				hdr_en;
+  
 initial begin 
-  hdr_valid_r1<=1'b0;
-  hdr_r1      <= 'b0;
-  hdr_keep_r1 <= 'b0;
-  hdr_buffer_full  <=1'b0;
-  data_buffer_full   <=1'b0;
-  data_valid_r1 <=1'b0;
-  data_r1   <='b0;
-  data_keep_r1<='b0;
-  data_last_r1<='b0
-  data_last_r2<='b0
-  temp_data ='b0;
-  temp_keep ='b0;
-end 
+ 
+hdr_r1      		<= 'b0;
+hdr_keep_r1 		<= 'b0;
+hdr_buffer_full    	<=1'b0;
+data_buffer_full   	<=1'b0;
+data_r1   		<='b0;
+data_keep_r1		<='b0;
+temp_data 		='b0;
+temp_keep 		='b0;
+
+	end 
 
 
   
@@ -186,16 +193,6 @@ axi_stream_insert_header axi(
 	.byte_insert_cnt	(byte_insert_cnt),
 	.keep_insert  		(keep_insert	),
         .ready_insert	 	(ready_insert	),
-        .data_r1         	(data_r1),
-        .data_keep_r1    	(data_keep_r1),
-        .hdr_valid_r1    	(hdr_valid_r1),
-        .hdr_r1          	(hdr_r1),
-        .hdr_keep_r1   	        (hdr_keep_r1),
-        .byte_insert_cnt_r1     (byte_insert_cnt_r1),
-        .temp_data              (temp_data),
-        .temp_keep              (temp_keep),
-        .hdr_buffer_full        (hdr_buffer_full),
-        .dara_buffer_full       (data_bufffer_full),
-        .hdr_en                 (hdr_en)
+       
 );
 endmodule
