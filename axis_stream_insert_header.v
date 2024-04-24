@@ -41,8 +41,8 @@ reg		[DATA_WD-1 : 0]		 hdr_r1;
 reg		[DATA_BYTE_WD-1 : 0] 	 hdr_keep_r1;
 reg		[BYTE_CNT_WD-1 : 0]	 byte_insert_cnt_r1;
 
-reg 	[2*DATA_WD-1 : 0]		 temp_data;
-reg 	[2*DATA_BYTE_WD-1 : 0] 		 temp_keep;
+reg 		[2*DATA_WD-1 : 0]	 temp_data;
+reg 		[2*DATA_BYTE_WD-1 : 0] 	 temp_keep;
 reg 	                        	 hdr_buffer_full;
 reg 	                        	 data_buffer_full;
 wire	                        	 hdr_en;
@@ -102,7 +102,7 @@ begin
 		data_last_r1  <= 'b0;
 		data_last_r2  <= 'b0;
 	end
-  else if(ready_in & vaild_in)  //data_ready 且 valid 时寄存axi_hdr的相关信号
+	else if(ready_in & valid_in)  //data_ready 且 valid 时寄存axi_hdr的相关信号
 	begin
 		data_valid_r1 <= valid_in;
 		data_valid_r2 <= data_valid_r1;
