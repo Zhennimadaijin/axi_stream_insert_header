@@ -5,20 +5,20 @@ parameter DATA_WD = 32,
 parameter DATA_BYTE_WD = DATA_WD / 8,
 parameter BYTE_CNT_WD = $clog2(DATA_BYTE_WD)
 ) (
-input                   clk,
-input                   rst_n,
+input                  		 clk,
+input                   	 rst_n,
 // AXI Stream input original data
-input                      valid_in,
-input [DATA_WD-1 : 0]      data_in,
-input [DATA_BYTE_WD-1 : 0] keep_in,
-input                      last_in,
-output                     ready_in,
+input                     	 valid_in,
+input [DATA_WD-1 : 0]     	 data_in,
+input [DATA_BYTE_WD-1 : 0] 	 keep_in,
+input                      	 last_in,
+output                     	 ready_in,
 // AXI Stream output with header inserted
-output                       valid_out,
-output [DATA_WD-1 : 0]       data_out,
-output [DATA_BYTE_WD-1 : 0]  keep_out,
-output                       last_out,
-input                        ready_out,
+output                           valid_out,
+output [DATA_WD-1 : 0]       	 data_out,
+output [DATA_BYTE_WD-1 : 0]  	 keep_out,
+output                           last_out,
+input                            ready_out,
 // The header to be inserted to AXI Stream input
 input                           valid_insert,
 input [DATA_WD-1 : 0]           data_insert,
@@ -29,23 +29,23 @@ input [BYTE_CNT_WD-1 : 0]       ready_insert
 // Your code here
 
   /////////定义寄存器变量
-reg								          data_valid_r1;
-reg								          data_valid_r2;
-reg								          data_last_r1;
-reg							           	data_last_r2;
-reg		[DATA_WD-1 : 0]			  data_r1;
-reg		[DATA_BYTE_WD-1 : 0] 	data_keep_r1;
+reg				         data_valid_r1;
+reg				         data_valid_r2;
+reg				         data_last_r1;
+reg				         data_last_r2;
+reg		[DATA_WD-1 : 0]		 data_r1;
+reg		[DATA_BYTE_WD-1 : 0]	 data_keep_r1;
 
-reg								          hdr_valid_r1;
-reg		[DATA_WD-1 : 0]		  	hdr_r1;
-reg		[DATA_BYTE_WD-1 : 0] 	hdr_keep_r1;
-reg		[BYTE_CNT_WD-1 : 0]		byte_insert_cnt_r1;
+reg					 hdr_valid_r1;
+reg		[DATA_WD-1 : 0]		 hdr_r1;
+reg		[DATA_BYTE_WD-1 : 0] 	 hdr_keep_r1;
+reg		[BYTE_CNT_WD-1 : 0]	 byte_insert_cnt_r1;
 
-reg 	[2*DATA_WD-1 : 0]		    temp_data;
-reg 	[2*DATA_BYTE_WD-1 : 0] 	temp_keep;
-reg 	                        hdr_buffer_full;
-reg 	                        data_buffer_full;
-wire	                        hdr_en;
+reg 	[2*DATA_WD-1 : 0]		 temp_data;
+reg 	[2*DATA_BYTE_WD-1 : 0] 		 temp_keep;
+reg 	                        	 hdr_buffer_full;
+reg 	                        	 data_buffer_full;
+wire	                        	 hdr_en;
 
 ////////////////////数据插入过程
 always @(posedge clk)
@@ -140,7 +140,7 @@ begin
 		temp_data [2*DATA_WD-1 : DATA_WD ] = hdr_r1 ;
 		temp_keep [2*DATA_BYTE_WD-1 : DATA_BYTE_WD]= hdr_keep_r1  ;
 		temp_data [DATA_WD-1 : 0 ]  = data_r1;
-	  temp_keep [DATA_BYTE_WD-1 : 0] = data_keep_r1;
+	  	temp_keep [DATA_BYTE_WD-1 : 0] = data_keep_r1;
     ////////根据字节插入计数进行移位
 		temp_data = temp_data << shift_cnt;
 		temp_keep = temp_keep << (DATA_BYTE_WD - byte_insert_cnt_r1);
